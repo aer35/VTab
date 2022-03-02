@@ -1,3 +1,5 @@
+// Deprecating this component in favor of different solution
+
 import { useEffect } from "react";
 import * as DarkReader from "darkreader";
 

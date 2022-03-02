@@ -4,7 +4,6 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import styles from "../styles/Home.module.css";
 import dynamic from "next/dynamic";
-import { markAsUntransferable } from "worker_threads";
 
 const DarkMode = dynamic(() => import("../components/Darkmode"), {
   ssr: false,
@@ -63,11 +62,17 @@ const PersonItem: React.FC<{ index: number; item: Item }> = ({
   index,
   item,
 }) => {
+  // TODO Make this a controlled component
   return (
     <>
       <div className="grid-item">
         <label>Item {index}</label> <br />
-        <input type="text" placeholder={`Item ${index}`} value={item.name} ></input>
+        <input
+          type="text"
+          placeholder={`Item ${index}`}
+          value={item.name}
+          onChange={(e) => e.target.value}
+        ></input>
       </div>
 
       <div className="grid-item">
@@ -80,9 +85,19 @@ const PersonItem: React.FC<{ index: number; item: Item }> = ({
 };
 
 const Home: NextPage = () => {
+  useEffect(() => {
+    // dynamic import to circumvent import time window generation
+    import("darkreader").then((DarkReader) =>
+      DarkReader.auto({
+        brightness: 100,
+        contrast: 90,
+        sepia: 10,
+      })
+    );
+  }, []);
   return (
     <div className={styles.container}>
-      <DarkMode />
+      {/* <DarkMode /> */}
       <Head>
         <title>Create Next App</title>
         <meta name="VTab" content="Web app for splitting payments" />
