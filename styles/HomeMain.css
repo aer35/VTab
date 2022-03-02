@@ -1,0 +1,29 @@
+.grid-main {
+  display: grid;
+  grid-template-columns: auto;
+  grid-gap: 5px;
+  padding: 5px;
+}
+
+.grid-person {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  grid-gap: 5px;
+  padding: 10px;
+}
+
+.grid-item {
+  border-radius: 5px;
+  padding: 3px;
+}
+
+.name {
+    grid-row: span 2;
+}
+
+.addItemButton {
+    color: blue;
+    display: flex;
+    align-self: flex-end;
+    justify-content: center;
+}
