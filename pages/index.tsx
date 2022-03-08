@@ -7,6 +7,12 @@ import PersonComponent from "../components/Person";
 import Item from "../model/Item";
 import Person from "../model/Person";
 
+// TODO
+// Consider refactoring objects to make the program actually have a purpose
+// Currently, there is no point to adding each persons items and splitting.
+// Use the splitwise app as a reference for useful functionality
+
+
 const DarkMode = dynamic(() => import("../components/Darkmode"), {
   ssr: false,
 });
@@ -70,12 +76,14 @@ const Home: NextPage = () => {
               ))}
 
               <div className="addPersonButton">
-                <a
-                  href="javascript:void(0)"
+                <button
+                  type="button"
                   onClick={() =>
                     setPeople([...people, { items: [{ name: "", cost: 0 }] }])
                   }
-                >Add another person</a>
+                >
+                  Add another person
+                </button>
               </div>
             </div>
             <div>

@@ -31,8 +31,8 @@ const PersonComponent: React.FC<{
         className="addItemButton"
         style={{ gridRow: `span ${items.length}` }}
       >
-        <a
-          href="javascript:void(0)"
+        <button
+          type="button"
           onClick={() =>
             setItems([
               ...items,
@@ -44,7 +44,7 @@ const PersonComponent: React.FC<{
           }
         >
           Add another item
-        </a>
+        </button>
       </div>
 
       {items.slice(1).map((item, i) => (
