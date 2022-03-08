@@ -17,13 +17,16 @@
   padding: 3px;
 }
 
-.name {
-    grid-row: span 2;
+.addItemButton {
+  color: blue;
+  display: flex;
+  align-self: flex-end;
+  justify-content: center;
 }
 
-.addItemButton {
-    color: blue;
-    display: flex;
-    align-self: flex-end;
-    justify-content: center;
+.addPersonButton {
+  color: blue;
+  display: flex;
+  align-self: flex-end;
+  justify-content: center;
 }

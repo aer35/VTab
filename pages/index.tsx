@@ -1,15 +1,17 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import styles from "../styles/Home.module.css";
 import dynamic from "next/dynamic";
-import Person from "../components/Person";
+import PersonComponent from "../components/Person";
+import Item from "../model/Item";
+import Person from "../model/Person";
 
 const DarkMode = dynamic(() => import("../components/Darkmode"), {
   ssr: false,
 });
 
+// Darkmode manager function
 const Home: NextPage = () => {
   useEffect(() => {
     // dynamic import to circumvent import time window generation
@@ -22,7 +24,10 @@ const Home: NextPage = () => {
     );
   }, []);
 
-  const [people, setPeople] = useState("");
+  const [people, setPeople] = useState<Person[]>([
+    { items: [{ name: "", cost: 0 }] },
+    { items: [{ name: "", cost: 0 }] },
+  ]);
 
   return (
     <div className={styles.container}>
@@ -53,14 +58,24 @@ const Home: NextPage = () => {
         <div>
           <form>
             <div className="grid-main">
-              <Person index={1} />
-              <Person index={2} />
+              {people.map((person, i) => (
+                <PersonComponent
+                  index={i + 1}
+                  items={person.items}
+                  setItems={(items) => {
+                    people[i] = { items };
+                    setPeople([...people]); //forces rerender
+                  }}
+                />
+              ))}
 
               <div className="addPersonButton">
                 <a
                   href="javascript:void(0)"
-                  onClick={() => setPeople(people + 1)}
-                ></a>
+                  onClick={() =>
+                    setPeople([...people, { items: [{ name: "", cost: 0 }] }])
+                  }
+                >Add another person</a>
               </div>
             </div>
             <div>

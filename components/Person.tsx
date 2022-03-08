@@ -1,15 +1,11 @@
-import { useState } from "react";
 import PersonItem from "./PersonItem";
 import Item from "../model/Item";
 
-const Person: React.FC<{ index: number }> = ({ index }) => {
-  let [items, setItems] = useState<Item[]>([
-    {
-      name: "",
-      cost: 0,
-    },
-  ]);
-
+const PersonComponent: React.FC<{
+  index: number;
+  items: Item[];
+  setItems: (item: Item[]) => void;
+}> = ({ index, items, setItems }) => {
   return (
     <div className="grid-person">
       <div className="grid-item" style={{ gridRow: `span ${items.length}` }}>
@@ -67,4 +63,4 @@ const Person: React.FC<{ index: number }> = ({ index }) => {
   );
 };
 
-export default Person;
+export default PersonComponent;
