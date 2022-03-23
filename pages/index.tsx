@@ -4,14 +4,12 @@ import React, { useEffect, useState } from "react";
 import styles from "../styles/Home.module.css";
 import dynamic from "next/dynamic";
 import PersonComponent from "../components/Person";
-import Item from "../model/Item";
 import Person from "../model/Person";
 
 // TODO
 // Consider refactoring objects to make the program actually have a purpose
 // Currently, there is no point to adding each persons items and splitting.
 // Use the splitwise app as a reference for useful functionality
-
 
 const DarkMode = dynamic(() => import("../components/Darkmode"), {
   ssr: false,
@@ -31,8 +29,8 @@ const Home: NextPage = () => {
   }, []);
 
   const [people, setPeople] = useState<Person[]>([
-    { items: [{ name: "", cost: 0 }] },
-    { items: [{ name: "", cost: 0 }] },
+    { name: "", items: [{ name: "", cost: 0 }] },
+    { name: "", items: [{ name: "", cost: 0 }] },
   ]);
 
   return (
@@ -62,14 +60,34 @@ const Home: NextPage = () => {
           </h2>
         </div>
         <div>
-          <form>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              fetch("http://localhost:3001/bills/123/total", {
+                body: JSON.stringify({
+                  persons: people.map((person) => person.name),
+                  items: people.flatMap((person) =>
+                    person.items.map((item) => item.cost)
+                  ),
+                }),
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                method: "POST",
+              })
+                .then((res) => res.json())
+                .then((resBody) => {
+                  alert(`Each person pays: $${resBody.partial}`);
+                });
+            }}
+          >
             <div className="grid-main">
               {people.map((person, i) => (
                 <PersonComponent
                   index={i + 1}
-                  items={person.items}
-                  setItems={(items) => {
-                    people[i] = { items };
+                  person={person}
+                  setPerson={(person) => {
+                    people[i] = person;
                     setPeople([...people]); //forces rerender
                   }}
                 />
@@ -79,7 +97,10 @@ const Home: NextPage = () => {
                 <button
                   type="button"
                   onClick={() =>
-                    setPeople([...people, { items: [{ name: "", cost: 0 }] }])
+                    setPeople([
+                      ...people,
+                      { name: "", items: [{ name: "", cost: 0 }] },
+                    ])
                   }
                 >
                   Add another person

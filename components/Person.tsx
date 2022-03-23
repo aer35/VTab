@@ -1,14 +1,18 @@
 import PersonItem from "./PersonItem";
 import Item from "../model/Item";
+import Person from "../model/Person";
 
 const PersonComponent: React.FC<{
   index: number;
-  items: Item[];
-  setItems: (item: Item[]) => void;
-}> = ({ index, items, setItems }) => {
+  person: Person;
+  setPerson: (person: Person) => void;
+}> = ({ index, person, setPerson }) => {
   return (
     <div className="grid-person">
-      <div className="grid-item" style={{ gridRow: `span ${items.length}` }}>
+      <div
+        className="grid-item"
+        style={{ gridRow: `span ${person.items.length}` }}
+      >
         <label>Person {index}</label>
         <br />
         <input
@@ -19,43 +23,39 @@ const PersonComponent: React.FC<{
       </div>
       <PersonItem
         index={1}
-        item={items[0]}
+        item={person.items[0]}
         setItem={(item) => {
-          // modify the array in place then call the setItems function while destructuring the old array and rerencering it
-          items[0] = item;
-          setItems([...items]);
+          person.items[0] = item;
+          setPerson({ ...person });
         }}
       />
 
       <div
         className="addItemButton"
-        style={{ gridRow: `span ${items.length}` }}
+        style={{ gridRow: `span ${person.items.length}` }}
       >
         <button
           type="button"
           onClick={() =>
-            setItems([
-              ...items,
-              {
-                name: "",
-                cost: 0,
-              },
-            ])
+            setPerson({
+              ...person,
+              items: [...person.items, { name: "", cost: 0 }],
+            })
           }
         >
           Add another item
         </button>
       </div>
 
-      {items.slice(1).map((item, i) => (
+      {person.items.slice(1).map((item, i) => (
         <PersonItem
           key={i}
           index={i + 2}
           item={item}
           setItem={(item) => {
             // modify the array in place then call the setItems function while destructuring the old array and rerencering it
-            items[i + 1] = item;
-            setItems([...items]);
+            person.items[i + 1] = item;
+            setPerson({ ...person });
           }}
         />
       ))}
